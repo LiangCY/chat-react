@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="/libs/semantic-ui/dist/semantic.min.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="/libs/jquery/dist/jquery.min.js"></script>
+    <script src="/libs/react/react.js"></script>
+    <script src="/libs/react/JSXTransformer.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+<div class="ui attached blue inverted menu">
+    <div class="ui container">
+        <div class="header item">
+            Chat
+        </div>
+        <div class="right menu">
+            <div class="item">{{name}}</div>
+            <div class="item">Logout</div>
+        </div>
+    </div>
+</div>
+<div id="main"></div>
+<script type="text/jsx" src="/js/index.js"></script>
+</body>
+</html>

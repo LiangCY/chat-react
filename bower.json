@@ -1,0 +1,24 @@
+{
+  "name": "chat-react",
+  "version": "0.0.0",
+  "homepage": "https://github.com/LiangCY/chat-react",
+  "authors": [
+    "LiangCY <liangcynju@qq.com>"
+  ],
+  "main": "app.js",
+  "keywords": [
+    "chat"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "semantic-ui": "~2.0.2",
+    "react": "~0.13.3"
+  }
+}

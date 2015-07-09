@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="/libs/semantic-ui/dist/semantic.min.css">
+</head>
+<body>
+<div class="ui attached blue inverted menu">
+    <div class="ui container">
+        <div class="header item">
+            Chat
+        </div>
+    </div>
+</div>
+<div class="ui raised very padded container horizontal segment">
+    <div class="ui two column middle aligned very relaxed grid">
+        <div class="center aligned column">
+            <h2 class="ui icon blue header">
+                <i class="signup icon"></i>
+
+                <div class="content">
+                    Register
+                </div>
+            </h2>
+        </div>
+        <div class="column">
+            <form class="ui form" action="/register" method="POST">
+                <div class="field">
+                    <label>Username</label>
+
+                    <div class="ui left icon input">
+                        <input type="text" name="username">
+                        <i class="user icon"></i>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Password</label>
+
+                    <div class="ui left icon input">
+                        <input type="password" name="password">
+                        <i class="lock icon"></i>
+                    </div>
+                </div>
+                <button class="ui blue submit button" type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
