@@ -3,7 +3,7 @@ var serve = require('koa-static');
 var bodyParser = require('koa-body');
 var level = require('level');
 var mongoose = require('mongoose');
-var route = require('koa-route');
+var router = require('koa-router')();
 var store = require('koa-level');
 var moment = require('moment');
 
@@ -24,17 +24,22 @@ var Index = require('./controllers/index');
 var User = require('./controllers/user');
 var Message = require('./controllers/message');
 
-app.use(route.get('/', Index.index));
-app.use(route.get('/login', User.loginPage));
-app.use(route.post('/login', User.login));
-app.use(route.get('/register', User.registerPage));
-app.use(route.post('/register', User.register));
+router.get('/login', User.loginPage);
+router.post('/login', User.login);
+router.get('/logout', User.logout);
+router.get('/register', User.registerPage);
+router.post('/register', User.register);
+router.get('/', User.loginRequired, Index.index);
+router.get('/messages', User.loginRequired, Message.list);
+
+app.use(router.routes());
 
 app.io.use(function* (next) {
     // on connect
-    console.log(this.session.user.username);
+    yield User.online;
     yield* next;
     // on disconnect
+    yield User.leave;
 });
 
 app.io.route('new message', Message.add);

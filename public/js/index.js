@@ -18,13 +18,14 @@ var Message = React.createClass({
         return (
             <div className="comment">
                 <a className="avatar">
-                    <img src="/img/user.jpg" />
+                    <img src="/img/user.jpg"/>
                 </a>
+
                 <div className="content">
                     <a className="author">{this.props.author}</a>
 
                     <div className="metadata">
-                        <span className="date">Today at 5:42PM</span>
+                        <span className="date">{moment(this.props.date).fromNow()}</span>
                     </div>
                     <div className="text">
                         {this.props.content}
@@ -40,7 +41,7 @@ var Messages = React.createClass({
         var messageRows = [];
         for (var i = 0; i < this.props.messages.length; i++) {
             var message = this.props.messages[i];
-            messageRows.push(<Message key={i} author={message.author} content={message.content}/>);
+            messageRows.push(<Message key={i} author={message.author} content={message.content} date={message.date}/>);
         }
         return (
             <div className="ui comments">
@@ -73,15 +74,28 @@ var Page = React.createClass({
     getInitialState: function () {
         var messages = [];
         user.getMessage(function (data) {
-            messages.push({
+            var messages = this.state.messages;
+            messages.unshift({
                 author: data.username,
-                content: data.content
+                content: data.content,
+                date: data.date
             });
             this.setState({messages: messages});
         }.bind(this));
         return {messages: messages};
     },
+    componentDidMount: function () {
+        $.ajax('/messages', {
+            dataType: 'json',
+            success: function (messages) {
+                this.setState({messages: messages});
+            }.bind(this)
+        });
+    },
     handleTalk: function (content) {
+        var messages = this.state.messages;
+        messages.unshift({author: 'me', content: content, date: moment()});
+        this.setState({messages: messages});
         user.talk(content);
     },
     render: function () {

@@ -8,7 +8,7 @@ exports.loginPage = function *() {
     this.body = yield render('login');
 };
 
-exports.login = function *(next) {
+exports.login = function *() {
     var username = this.request.body.username;
     var password = this.request.body.password;
     var user = yield User.findOne({username: username}).exec();
@@ -20,6 +20,29 @@ exports.login = function *(next) {
     }
 };
 
+exports.logout = function *() {
+    yield User.findByIdAndUpdate(
+        {_id: this.session.user._id},
+        {status: 0}
+    ).exec();
+    this.session.user = null;
+    this.redirect('/login');
+};
+
+exports.online = function *() {
+    yield User.findByIdAndUpdate(
+        {_id: this.session.user._id},
+        {status: 1}
+    ).exec();
+};
+
+exports.leave = function *() {
+    yield User.findByIdAndUpdate(
+        {_id: this.session.user._id},
+        {status: 0}
+    ).exec();
+};
+
 exports.registerPage = function *() {
     this.body = yield render('register');
 };
@@ -28,4 +51,12 @@ exports.register = function *() {
     var user = new User(this.request.body);
     yield user.save();
     this.redirect('/login');
+};
+
+exports.loginRequired = function *(next) {
+    if (this.session.user) {
+        yield* next;
+    } else {
+        this.redirect('/login');
+    }
 };
