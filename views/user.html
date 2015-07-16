@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="/libs/semantic-ui/dist/semantic.min.css">
+    <link rel="stylesheet" href="/css/user.css">
+    <script src="/libs/jquery/dist/jquery.min.js"></script>
+    <script src="/libs/semantic-ui/dist/semantic.min.js"></script>
+</head>
+<body>
+<div class="ui attached blue inverted menu">
+    <div class="ui container">
+        <a class="header item" href="/">
+            Chat
+        </a>
+        <div class="right menu">
+            <div class="item">{{name}}</div>
+            <a class="item" href="/logout">Logout</a>
+        </div>
+    </div>
+</div>
+<div class="ui main container">
+    <div class="ui action input">
+        <input type="text" placeholder="QQ" name="qq" value="{{qq}}">
+        <button class="ui blue button">Save</button>
+    </div>
+    <div class="ui positive message">
+        <i class="close icon"></i>
+
+        <p>QQ Saved!</p>
+    </div>
+</div>
+<script>
+    $('.message').hide();
+    $('.ui.blue.button').on('click', function () {
+        var qq = $('.ui.action.input input').val();
+        $.ajax('/qq', {
+            data: {
+                qq: qq
+            },
+            success: function (data) {
+                if (data.success === 1) {
+                    $('.message').transition('fade in');
+                }
+            }
+        });
+    });
+    $('.message .close').on('click', function () {
+        $(this).closest('.message').transition('fade');
+    });
+</script>
+</body>
+</html>

@@ -30,7 +30,9 @@ router.get('/logout', User.logout);
 router.get('/register', User.registerPage);
 router.post('/register', User.register);
 router.get('/', User.loginRequired, Index.index);
-router.get('/messages', User.loginRequired, Message.list);
+router.get('/room', User.loginRequired, Index.getRoom);
+router.get('/me', User.loginRequired, User.userPage);
+router.get('/qq', User.loginRequired, User.changeQQ);
 
 app.use(router.routes());
 
@@ -45,3 +47,5 @@ app.io.use(function* (next) {
 app.io.route('new message', Message.add);
 
 app.listen(3000);
+
+module.exports = app.io;

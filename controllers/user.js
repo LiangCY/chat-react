@@ -8,6 +8,23 @@ exports.loginPage = function *() {
     this.body = yield render('login');
 };
 
+exports.userPage = function *() {
+    this.body = yield render('user', {
+        name: this.session.user.username,
+        qq: this.session.user.qq ? this.session.user.qq : ''
+    });
+};
+
+exports.changeQQ = function *() {
+    var qq = this.query.qq;
+    yield User.findByIdAndUpdate(
+        {_id: this.session.user._id},
+        {qq: qq}
+    ).exec();
+    this.session.user.qq = qq;
+    this.body = {success: 1};
+};
+
 exports.login = function *() {
     var username = this.request.body.username;
     var password = this.request.body.password;
@@ -30,17 +47,22 @@ exports.logout = function *() {
 };
 
 exports.online = function *() {
-    yield User.findByIdAndUpdate(
+    var user = yield User.findByIdAndUpdate(
         {_id: this.session.user._id},
         {status: 1}
     ).exec();
+    this.broadcast.emit('user online', {
+        name: user.username,
+        qq: user.qq
+    });
 };
 
 exports.leave = function *() {
-    yield User.findByIdAndUpdate(
+    var user = yield User.findByIdAndUpdate(
         {_id: this.session.user._id},
         {status: 0}
     ).exec();
+    this.broadcast.emit('user leave', {name: user.username});
 };
 
 exports.registerPage = function *() {
