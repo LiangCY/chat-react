@@ -1,5 +1,3 @@
-var socket = io();
-
 var room = (function () {
     var socket = io();
     return {
